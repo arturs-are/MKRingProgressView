@@ -41,6 +41,13 @@ open class RingProgressLayer: CALayer {
         }
     }
 
+    /// Whether or not to blend start and end colors.
+    @objc open var blendColors = false {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+
     /// The color of the background ring.
     @objc open var backgroundRingColor: CGColor? {
         didSet {
@@ -236,8 +243,13 @@ open class RingProgressLayer: CALayer {
             let s = Float(1.5 * w / (2 * .pi * r))
             gradientGenerator.scale = gradientImageScale
             gradientGenerator.size = gradientRect.size
-            gradientGenerator.colors = [endColor, endColor, startColor, startColor]
-            gradientGenerator.locations = [0.0, s, (1.0 - s), 1.0]
+            if blendColors {
+                gradientGenerator.colors = [startColor, startColor, endColor, startColor, startColor]
+                gradientGenerator.locations = [0.0, s, 0.25, (1.0 - s), 1.0]
+            } else {
+                gradientGenerator.colors = [endColor, endColor, startColor, startColor]
+                gradientGenerator.locations = [0.0, s, (1.0 - s), 1.0]
+            }
             gradientGenerator.endPoint = CGPoint(x: 0.5 - CGFloat(2 * s), y: 1.0)
             return gradientGenerator.image()
         }()

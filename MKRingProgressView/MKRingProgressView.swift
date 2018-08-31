@@ -54,6 +54,16 @@ open class RingProgressView: UIView {
         }
     }
 
+    /// Whether or not to blend start and end colors. Defaults to `false`
+    @IBInspectable open var blendColors: Bool {
+        get {
+            return ringProgressLayer.blendColors
+        }
+        set {
+            ringProgressLayer.blendColors = newValue
+        }
+    }
+
     /// The color of backdrop circle, visible at progress values between 0.0 and 1.0.
     /// If not specified, `startColor` with 15% opacity will be used.
     @IBInspectable open var backgroundRingColor: UIColor? {
